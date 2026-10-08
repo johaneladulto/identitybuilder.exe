@@ -1,0 +1,791 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IDENTITY BUILDER.EXE</title>
+  <style>
+    :root { --bg:#050506; --ink:#f4f1ea; --muted:#a9a6ae; --line:rgba(244,241,234,.22); --acid:#d9ff38; --violet:#865cff; --coral:#ff6d64; --cyan:#63ddff; }
+    * { box-sizing:border-box; }
+    body { margin:0; min-height:100vh; overflow-x:hidden; color:var(--ink); background:var(--bg); font-family:Arial,Helvetica,sans-serif; }
+    body {
+  background: #000;
+}
+
+/* Estrellas pequeñas */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -100%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: .72;
+  background-image:
+    radial-gradient(circle, #ffffff 1px, transparent 1.5px),
+    radial-gradient(circle, var(--acid) 1px, transparent 1.5px),
+    radial-gradient(circle, var(--cyan) .8px, transparent 1.3px);
+  background-size:
+    67px 71px,
+    137px 131px,
+    101px 97px;
+  background-position:
+    0 0,
+    30px 50px,
+    80px 20px;
+  animation: starsMove 34s linear infinite;
+}
+
+/* Estrellas más grandes, muy sutiles */
+body::after {
+  content: "";
+  position: fixed;
+  inset: -100%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: .38;
+  background-image:
+    radial-gradient(circle, white 1.5px, transparent 2px),
+    radial-gradient(circle, var(--violet) 1px, transparent 1.5px);
+  background-size:
+    191px 179px,
+    241px 229px;
+  background-position:
+    20px 80px,
+    130px 30px;
+  animation: starsMoveSlow 55s linear infinite;
+}
+
+@keyframes starsMove {
+  from { transform: translate(0, 0); }
+  to { transform: translate(110px, 160px); }
+}
+
+@keyframes starsMoveSlow {
+  from { transform: translate(0, 0); }
+  to { transform: translate(-90px, 120px); }
+}
+
+    @keyframes float {
+      to { transform:translate(10vw,7vh) scale(1.18); }
+    }
+
+    .app { position:relative; z-index:1; max-width:1500px; min-height:100vh; padding:28px clamp(20px,4vw,64px) 22px; margin:auto; }
+
+    .topbar {
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:24px;
+      padding-bottom:20px;
+      border-bottom:1px solid var(--line);
+    }
+
+    .eyebrow,
+    .system,
+    .variant-button,
+    .footer {
+      font:500 10px/1.1 ui-monospace,Consolas,monospace;
+      letter-spacing:.1em;
+    }
+
+    .eyebrow { margin:0 0 8px; color:var(--muted); }
+
+    h1 {
+      margin:0;
+      color:white;
+      font-family:Impact,"Arial Black",sans-serif;
+      font-size:clamp(43px,6vw,82px);
+      font-weight:400;
+      letter-spacing:-.05em;
+      line-height:.78;
+    }
+
+    h1 em { color:var(--acid); font-style:normal; }
+
+    .system {
+      display:flex;
+      align-items:center;
+      gap:7px;
+      padding:9px 11px;
+      border:1px solid var(--line);
+      color:var(--muted);
+    }
+
+    .pulse {
+      width:7px;
+      height:7px;
+      border-radius:50%;
+      background:var(--acid);
+      box-shadow:0 0 12px var(--acid);
+    }
+
+    .layout {
+      display:grid;
+      grid-template-columns:minmax(260px,.62fr) minmax(0,1.75fr);
+      gap:20px;
+      padding-top:20px;
+    }
+
+    .panel {
+      border:1px solid var(--line);
+      background:rgba(5,5,6,.54);
+      backdrop-filter:blur(12px);
+    }
+
+    .interface {
+      min-height:620px;
+      padding:18px;
+    }
+
+    .intro {
+      margin:0 0 25px;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.4;
+    }
+
+    .generate,
+    .organize {
+      width:100%;
+      padding:17px 14px;
+      border:1px solid var(--acid);
+      background:var(--acid);
+      color:#050506;
+      font-size:13px;
+      font-weight:800;
+      text-align:left;
+      transition:.2s;
+      cursor:pointer;
+    }
+
+    .generate:hover {
+      background:var(--ink);
+      box-shadow:5px 5px 0 var(--violet);
+    }
+
+    .generate span,
+    .organize span {
+      float:right;
+      font-size:18px;
+      line-height:.7;
+    }
+
+    .organize {
+      margin-top:8px;
+      padding:11px 14px;
+      border-color:var(--line);
+      color:var(--ink);
+      background:transparent;
+      font-size:10px;
+      letter-spacing:.08em;
+    }
+
+    .organize:hover {
+      border-color:var(--cyan);
+      color:var(--cyan);
+      background:rgba(99,221,255,.1);
+    }
+
+    .mode-tabs {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      margin:22px 0;
+      border:1px solid var(--line);
+    }
+
+    .mode-button {
+      padding:10px 6px;
+      border:0;
+      color:var(--muted);
+      background:transparent;
+      cursor:pointer;
+      font:500 10px ui-monospace,Consolas,monospace;
+      letter-spacing:.08em;
+    }
+
+    .mode-button + .mode-button { border-left:1px solid var(--line); }
+
+    .mode-button.active {
+      color:var(--acid);
+      background:rgba(217,255,56,.12);
+    }
+
+    .variable-label {
+      display:flex;
+      justify-content:space-between;
+      padding:11px 0;
+      border-top:1px solid var(--line);
+      color:var(--muted);
+      font:500 10px ui-monospace,Consolas,monospace;
+      letter-spacing:.08em;
+    }
+
+    .variable-label b { color:var(--ink); }
+
+    .variant-row {
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:5px;
+      margin:-2px 0 13px;
+    }
+
+    .variant-button {
+      padding:9px 2px;
+      border:1px solid var(--line);
+      background:transparent;
+      color:var(--muted);
+      cursor:pointer;
+    }
+
+    .variant-button.active {
+      color:#050506;
+      border-color:var(--acid);
+      background:var(--acid);
+    }
+
+    .hint {
+      margin:24px 0 0;
+      padding:11px;
+      border-left:2px solid var(--cyan);
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.4;
+    }
+
+    .board-panel {
+      display:flex;
+      flex-direction:column;
+      min-height:620px;
+      padding:15px;
+    }
+
+    .board-top {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      padding:0 0 13px;
+    }
+
+    .board-top .eyebrow { margin:0; }
+
+    .selection {
+      color:var(--muted);
+      font:10px ui-monospace,Consolas,monospace;
+    }
+
+    .board {
+      position:relative;
+      flex:1;
+      min-height:500px;
+      overflow:hidden;
+      border:1px solid var(--line);
+      cursor:crosshair;
+      background:
+        radial-gradient(circle at 50% 45%,rgba(134,92,255,.25),transparent 34%),
+        linear-gradient(135deg,rgba(217,255,56,.08),transparent 40%);
+    }
+
+    .board::before {
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px);
+      background-size:26px 26px;
+      mask-image:linear-gradient(135deg,black,transparent 80%);
+    }
+
+    .board::after {
+      content:"DRAG / COMPOSE / RECONFIGURE";
+      position:absolute;
+      right:12px;
+      bottom:10px;
+      color:rgba(244,241,234,.35);
+      font:10px ui-monospace,Consolas,monospace;
+      letter-spacing:.08em;
+      pointer-events:none;
+    }
+
+    .piece {
+  position:absolute;
+  width:clamp(170px,28vw,340px);
+  height:clamp(170px,28vw,340px);
+  object-fit:contain;
+  user-select:none;
+  touch-action:none;
+  cursor:grab;
+  filter:none;
+  transition:filter .16s,transform .16s;
+}
+
+/* Brillo al seleccionar cualquier elemento */
+.piece:hover,
+.piece.selected {
+  filter:drop-shadow(0 0 13px var(--acid));
+}
+
+/* Sombra negra únicamente para el cabello */
+#hair {
+  filter:drop-shadow(8px 9px 0 rgba(0,0,0,.48));
+}
+
+#hair:hover,
+#hair.selected {
+  filter:
+    drop-shadow(0 0 13px var(--acid))
+    drop-shadow(8px 9px 0 rgba(0,0,0,.48));
+}
+
+    .piece.dragging {
+      cursor:grabbing;
+      transition:none;
+    }
+
+    .combination {
+      display:flex;
+      justify-content:space-between;
+      align-items:end;
+      gap:18px;
+      padding-top:15px;
+    }
+
+    .combination code {
+      display:block;
+      color:var(--acid);
+      font:500 clamp(20px,3vw,38px) ui-monospace,Consolas,monospace;
+      letter-spacing:-.09em;
+    }
+
+    .combination p {
+      margin:0 0 5px;
+      color:var(--muted);
+      font:10px ui-monospace,Consolas,monospace;
+      letter-spacing:.08em;
+    }
+
+    .count {
+      text-align:right;
+      color:var(--muted);
+      font:10px ui-monospace,Consolas,monospace;
+      white-space:nowrap;
+    }
+
+    .footer {
+      display:flex;
+      justify-content:space-between;
+      padding-top:17px;
+      color:var(--muted);
+    }
+
+    @media (max-width:800px) {
+      .layout { grid-template-columns:1fr; }
+      .interface { min-height:auto; }
+      .board-panel { min-height:570px; }
+      .board { min-height:440px; }
+    }
+
+    @media (max-width:480px) {
+      .app { padding:20px; }
+      .topbar { flex-direction:column; }
+      .combination {
+        align-items:flex-start;
+        flex-direction:column;
+      }
+      .count { text-align:left; }
+    }
+
+    body {
+  background: #000;
+}
+
+.score-button {
+  width: 100%;
+  margin-top: 8px;
+  padding: 12px 14px;
+  border: 1px solid var(--violet);
+  background: rgba(134, 92, 255, .18);
+  color: white;
+  font: 700 10px ui-monospace, Consolas, monospace;
+  letter-spacing: .1em;
+  text-align: left;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.score-button span {
+  float: right;
+  color: var(--acid);
+}
+
+.score-button:hover {
+  background: var(--violet);
+  border-color: var(--violet);
+  box-shadow: 4px 4px 0 var(--acid);
+}
+
+.score-result {
+  margin-top: 8px;
+  padding: 13px;
+  border: 1px solid var(--line);
+  color: var(--acid);
+  background: rgba(217, 255, 56, .06);
+  font: 700 16px ui-monospace, Consolas, monospace;
+  letter-spacing: -.04em;
+}
+
+
+  </style>
+</head>
+
+<body>
+
+
+  <main class="app">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">YOHAN ARIAS MARTINEZ</p>
+        <h1>IDENTITY<br>BUILDER<em>.EXE</em></h1>
+      </div>
+
+      <div class="system">
+        <span class="pulse"></span>
+        SYSTEM ONLINE
+      </div>
+    </header>
+
+    <section class="layout">
+      <aside class="interface panel">
+        <p class="eyebrow">CONTROL INTERFACE / 01</p>
+
+        <p class="intro">
+          Combina fragmentos, genera una identidad y mueve cada variable
+          libremente sobre el tablero.
+        </p>
+
+        <button class="generate" id="generate" type="button">
+          GENERAR IDENTIDAD <span>↗</span>
+        </button>
+
+        <button class="organize" id="organize" type="button">
+          ORDENAR POSICIÓN <span>◎</span>
+        </button>
+        <button class="score-button" id="calculate-score" type="button">
+  CALCULAR SCORE <span>✦</span>
+</button>
+
+<div id="score-result" class="score-result">
+  SCORE / — PTS
+</div>
+
+        <div class="mode-tabs">
+          <button class="mode-button active" type="button">GENERAR</button>
+          <button class="mode-button active" type="button">CONSTRUIR</button>
+        </div>
+
+        <div id="controls"></div>
+
+        <p class="hint">
+          Selecciona una variable y arrástrala en el tablero. Las capas no
+          representan una identidad fija: puedes reorganizarlas.
+        </p>
+      </aside>
+
+      <section class="board-panel panel">
+        <div class="board-top">
+          <p class="eyebrow">COMPOSITION BOARD / DRAG ELEMENTS</p>
+          <span id="selection" class="selection">SELECT: —</span>
+        </div>
+
+        <div id="board" class="board" aria-label="Tablero para componer identidad"></div>
+
+        <div class="combination">
+          <div>
+            <p>COMBINATION CODE</p>
+            <code id="code">R1-O1-N1-B1-C1</code>
+          </div>
+
+          <div id="count" class="count">CONFIGURATION 001 / 243</div>
+        </div>
+      </section>
+    </section>
+
+    <footer class="footer">
+      <span>IDENTITY IS A VARIABLE</span>
+      <span>v0.2 / COMPOSITION PROTOTYPE</span>
+    </footer>
+  </main>
+
+  <script>
+    // Cambia estas rutas si tus PNG tienen nombres o carpeta diferentes.
+    const categories = [
+      {
+        key: "face",
+        label: "ROSTRO",
+        prefix: "R",
+        files: ["silueta 1.png", "silueta 2.png", "silueta 3.png"]
+      },
+      {
+        key: "eyes",
+        label: "OJOS",
+        prefix: "O",
+        files: ["ojos1.png", "ojos2.png", "ojos3.png"]
+      },
+      {
+        key: "nose",
+        label: "NARIZ",
+        prefix: "N",
+        files: ["nariz 1.png", "nariz 2.png", "nariz 3.png"]
+      },
+      {
+        key: "mouth",
+        label: "BOCA",
+        prefix: "B",
+        files: ["boca 1.png", "boca 2.png", "boca 3.png"]
+      },
+      {
+        key: "hair",
+        label: "CABELLO",
+        prefix: "C",
+        files: ["pelo 1.png", "pelo 2.png", "calvo.png"]
+      }
+    ];
+
+    const total = 3 ** categories.length;
+    
+
+    const state = {
+  face: 1,
+  eyes: 1,
+  nose: 1,
+  mouth: 1,
+  hair: 1
+};
+
+const scores = {
+  face:  { 1: 7,  2: 25, 3: 18 },
+  eyes:  { 1: 16, 2: 20, 3: 30 },
+  nose:  { 1: 20, 2: 12, 3: 6 },
+  mouth: { 1: 15, 2: 20, 3: 25 },
+  hair:  { 1: 25, 2: 20, 3: 30 }
+};
+
+    // Posición inicial de cada fragmento.
+    // Ajusta estos valores si alguno de tus PNG es muy grande o pequeño.
+    const defaults = {
+      face:  { left: 27, top: 18, width: 46, z: 1 },
+      hair:  { left: 24, top: 7,  width: 52, z: 2 },
+      eyes:  { left: 36, top: 37, width: 28, z: 3 },
+      nose:  { left: 43.4, top: 42, width: 13, z: 5 },
+      mouth: { left: 44, top: 55, width: 12, z: 4 }
+    };
+
+    
+
+    const board = document.querySelector("#board");
+    const controls = document.querySelector("#controls");
+
+    let selectedKey = null;
+
+    function combinationIndex() {
+      return categories.reduce((sum, item, index) => {
+        return sum + (state[item.key] - 1) * 3 ** (categories.length - index - 1);
+      }, 0) + 1;
+    }
+
+    function updateReadout() {
+      const code = categories
+        .map(item => item.prefix + state[item.key])
+        .join("-");
+
+      const number = combinationIndex();
+
+      document.querySelector("#code").textContent = code;
+
+      document.querySelector("#count").textContent =
+        `CONFIGURATION ${String(number).padStart(3, "0")} / ${total}`;
+
+      document.querySelector("#selection").textContent = selectedKey
+        ? `SELECT: ${categories.find(item => item.key === selectedKey).label}`
+        : "SELECT: —";
+    }
+
+    function renderControls() {
+      controls.innerHTML = categories.map(item => `
+        <div class="variable-label">
+          <span>${item.label}</span>
+          <b>${item.prefix}${state[item.key]}</b>
+        </div>
+
+        <div class="variant-row">
+          ${[1, 2, 3].map(value => `
+            <button
+              class="variant-button ${state[item.key] === value ? "active" : ""}"
+              data-key="${item.key}"
+              data-value="${value}"
+              type="button"
+            >
+              ${item.prefix}${value}
+            </button>
+          `).join("")}
+        </div>
+      `).join("");
+    }
+
+    function setNormalPosition(piece, key) {
+      const position = defaults[key];
+
+      piece.style.left = position.left + "%";
+      piece.style.top = position.top + "%";
+      piece.style.width = position.width + "%";
+      piece.style.height = "auto";
+      piece.style.zIndex = position.z;
+    }
+
+    function placeNormally() {
+      categories.forEach(item => {
+        setNormalPosition(document.querySelector("#" + item.key), item.key);
+      });
+    }
+
+    function createPieces() {
+      categories.forEach(item => {
+        const image = document.createElement("img");
+
+        image.id = item.key;
+        image.className = "piece";
+        image.alt = item.label;
+        image.draggable = false;
+
+        setNormalPosition(image, item.key);
+
+        image.addEventListener("pointerdown", startDrag);
+
+        image.addEventListener("click", () => {
+          selectedKey = item.key;
+          updateSelection();
+        });
+
+        board.append(image);
+      });
+    }
+
+    function renderImages() {
+      categories.forEach(item => {
+        document.querySelector("#" + item.key).src =
+          item.files[state[item.key] - 1];
+      });
+    }
+
+    function updateSelection() {
+      document.querySelectorAll(".piece").forEach(piece => {
+        piece.classList.toggle("selected", piece.id === selectedKey);
+      });
+
+      updateReadout();
+    }
+
+    function update() {
+      renderImages();
+      renderControls();
+      updateSelection();
+    }
+
+    function randomize() {
+      categories.forEach(item => {
+        state[item.key] = Math.floor(Math.random() * 3) + 1;
+      });
+
+      placeNormally();
+      selectedKey = null;
+      update();
+    }
+
+    function startDrag(event) {
+      const piece = event.currentTarget;
+
+      selectedKey = piece.id;
+      updateSelection();
+
+      const boardRect = board.getBoundingClientRect();
+      const pieceRect = piece.getBoundingClientRect();
+
+      const offsetX = event.clientX - pieceRect.left;
+      const offsetY = event.clientY - pieceRect.top;
+
+      piece.setPointerCapture(event.pointerId);
+      piece.classList.add("dragging");
+      
+
+      const move = moveEvent => {
+        const maxX = boardRect.width - pieceRect.width;
+        const maxY = boardRect.height - pieceRect.height;
+
+        const positionX = Math.max(
+          0,
+          Math.min(moveEvent.clientX - boardRect.left - offsetX, maxX)
+        );
+
+        const positionY = Math.max(
+          0,
+          Math.min(moveEvent.clientY - boardRect.top - offsetY, maxY)
+        );
+
+        piece.style.left = positionX + "px";
+        piece.style.top = positionY + "px";
+      };
+
+      const end = () => {
+        piece.classList.remove("dragging");
+        
+
+        piece.removeEventListener("pointermove", move);
+        piece.removeEventListener("pointerup", end);
+        piece.removeEventListener("pointercancel", end);
+      };
+
+      piece.addEventListener("pointermove", move);
+      piece.addEventListener("pointerup", end);
+      piece.addEventListener("pointercancel", end);
+    }
+
+    function calculateScore() {
+  const score = categories.reduce((total, item) => {
+    return total + scores[item.key][state[item.key]];
+  }, 0);
+
+  document.querySelector("#score-result").textContent =
+    `SCORE / ${score} PTS`;
+}
+
+document.querySelector("#calculate-score").addEventListener(
+  "click",
+  calculateScore
+);
+
+document.querySelector("#generate").addEventListener("click", randomize);
+
+document.querySelector("#organize").addEventListener("click", placeNormally);
+
+controls.addEventListener("click", event => {
+      const button = event.target.closest(".variant-button");
+
+      if (!button) return;
+
+      state[button.dataset.key] = Number(button.dataset.value);
+      selectedKey = button.dataset.key;
+
+      update();
+    });
+
+    createPieces();
+    update();
+
+
+    
+  </script>
+</body>
+</html>
+```
